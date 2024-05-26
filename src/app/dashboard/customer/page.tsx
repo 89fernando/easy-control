@@ -1,16 +1,21 @@
 import { Container } from "@/components/container";
-import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/auth";
+import { getServerSession } from "next-auth";
 import { redirect } from "next/navigation";
-export default async function Dashboard() {
+
+export default async function Customer(){
     const session = await getServerSession(authOptions);
 
     if(!session || !session.user) {
         redirect("/")
     }
-    return(
+    return (
         <Container>
-            <h1> página de Dashboard</h1>
+            <main>
+                <div>
+                    <h1>Customer</h1>
+                </div>
+            </main>
         </Container>
     )
 }
