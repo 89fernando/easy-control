@@ -33,6 +33,7 @@ export function NewCustomerForm({userId}: {userId: string}) {
             address: data.address,
             userId
         })
+        router.refresh()
         router.replace("/dashboard/customer")
         
     }
