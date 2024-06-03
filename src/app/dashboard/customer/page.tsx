@@ -10,6 +10,7 @@ export default async function Customer(){
     const session = await getServerSession(authOptions);
 
     if(!session || !session.user) {
+        
         redirect("/")
     }
 
@@ -19,8 +20,7 @@ export default async function Customer(){
         }
     })
 
-    console.log(customers);
-    
+  
     return (
         <Container>
             <main className="mt-9 mb-2">
@@ -41,6 +41,13 @@ export default async function Customer(){
                         ))
                     }
                 </section>
+                {
+                    customers.length === 0 && (
+                        <p className="text-center text-lg mt-4 text-gray-600">
+                            Você ainda não possui nenhum cliente
+                        </p>
+                    )
+                }
             </main>
         </Container>
     )

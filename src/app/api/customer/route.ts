@@ -2,6 +2,8 @@ import { authOptions } from "@/lib/auth";
 import { getServerSession } from "next-auth";
 import { NextResponse } from "next/server";
 import prismaClient from "@/lib/prisma";
+
+// Rota para cadastrar um cliente
 export async function POST(request: Request){
     const session = await getServerSession(authOptions);
 
@@ -26,6 +28,40 @@ export async function POST(request: Request){
         
     }catch(error){
         return NextResponse.json({ message: "Failed create new customer"}, { status: 400 })
+    }
+
+}
+
+// Rota para deletar um cliente
+export async function DELETE(request: Request){
+    const session = await getServerSession(authOptions);
+
+    if(!session || !session.user) {
+        return NextResponse.json({ message: "Unauthorized"}, { status: 401 })
+    }
+
+    const { searchParams } = new URL(request.url);
+    const userId = searchParams.get("id");
+
+    const findTickets = await prismaClient.ticket.findFirst({
+        where: {
+            customerId: userId as string
+        }
+    })
+
+    if(findTickets){
+        return NextResponse.json({ message: "Failed delete customer"}, { status: 400 })}
+    
+    try{
+        await prismaClient.customer.delete({
+            where: {
+                id: userId as string
+            }
+        })
+        return NextResponse.json({ message: "Success delete new customer"}, { status: 200 })
+    }catch(error){
+        console.log(error)
+        return NextResponse.json({ message: "Failed delete new customer"}, { status: 400 })
     }
 
 }
