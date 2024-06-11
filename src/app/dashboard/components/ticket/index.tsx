@@ -2,6 +2,7 @@
 import { api } from "@/lib/api";
 import { CustomerProps } from "@/utils/customer.type";
 import { TicketProps } from "@/utils/ticket.type";
+import { useRouter } from "next/navigation";
 import { FiCheckSquare, FiFile, FiTrash, FiTrash2 } from "react-icons/fi";
 
 interface TicketItemProps{
@@ -9,14 +10,14 @@ interface TicketItemProps{
     customer: CustomerProps | null
 }
 export function TicketItem({ ticket, customer }: TicketItemProps){
-
+    const router = useRouter()
     async function handleChangeStatus() {
         try{
             const response = await api.patch("/api/ticket", {
                 id: ticket.id,
             })
 
-            console.log(response.data);
+            router.refresh()
             
         }catch(error){
 
@@ -36,7 +37,7 @@ export function TicketItem({ ticket, customer }: TicketItemProps){
                     <span className="bg-green-500 px-2 py-1 rounded-lg">{ticket.status}</span>
                 </td>
                 <td className="text-left">
-                    <button className="mr-2">
+                    <button className="mr-3">
                         <FiCheckSquare  size={24} color='#131313' onClick={handleChangeStatus}/>
                     </button>
                     <button>
