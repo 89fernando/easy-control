@@ -4,7 +4,7 @@ import { ModalContext } from "@/providers/modal";
 import { useContext, useRef, MouseEvent } from "react"
 
 export function ModalTicket(){
-    const { handleModalVisible } = useContext(ModalContext);
+    const { handleModalVisible, ticket } = useContext(ModalContext);
     const modalRef = useRef<HTMLDivElement | null>(null)
 
     const handleModalClick = (e: MouseEvent<HTMLDivElement>) => {
@@ -25,12 +25,12 @@ export function ModalTicket(){
 
                     <div className="flex flex-wrap gap-1 mb-2">
                         <h2 className="font-bold">Nome:</h2>
-                        <p>Problema no pc</p>
+                        <p>{ticket?.ticket.name}</p>
                     </div>
 
                     <div className="flex flex-col gap-1 mb-2">
                         <h2 className="font-bold">Descrição:</h2>
-                        <p>Descrição do problema</p>
+                        <p>{ticket?.ticket.description}</p>
                     </div>
 
                     <div className="w-full border-b-[1.5px] my-4"></div>
@@ -38,23 +38,25 @@ export function ModalTicket(){
 
                     <div className="flex flex-wrap gap-1 mb-2">
                         <h2 className="font-bold">Nome:</h2>
-                        <p>Mercado</p>
+                        <p>{ticket?.customer?.name}</p>
                     </div>
 
                     <div className="flex flex-wrap gap-1 mb-2">
                         <h2 className="font-bold">Telefone:</h2>
-                        <p>9687945879</p>
+                        <p>{ticket?.customer?.phone}</p>
                     </div>
 
                     <div className="flex flex-wrap gap-1 mb-2">
                         <h2 className="font-bold">E-mail:</h2>
-                        <p>Teste@teste</p>
+                        <p>{ticket?.customer?.email}</p>
                     </div>
 
-                    <div className="flex flex-wrap gap-1 mb-2">
+                    {ticket?.customer?.address && (
+                        <div className="flex flex-wrap gap-1 mb-2">
                         <h2 className="font-bold">Endereço:</h2>
-                        <p>Rua@teste</p>
+                        <p>{ticket?.customer?.address}</p>
                     </div>
+                    )}
                 </div>
             </div>
 
