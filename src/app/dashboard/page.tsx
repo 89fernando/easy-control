@@ -24,8 +24,6 @@ export default async function Dashboard() {
             created_at: "desc"
         }
     })
-
-    console.log(tickets);
     
     return(
         <Container>

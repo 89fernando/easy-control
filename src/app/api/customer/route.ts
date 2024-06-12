@@ -2,6 +2,31 @@ import { authOptions } from "@/lib/auth";
 import { getServerSession } from "next-auth";
 import { NextResponse } from "next/server";
 import prismaClient from "@/lib/prisma";
+import { custom } from "zod";
+
+
+// Rota para buscar todos os clientes
+
+export async function GET (request: Request){
+    const { searchParams } = new URL(request.url);
+    const customerEmail = searchParams.get("email");
+
+    if(!customerEmail || customerEmail === ""){
+        return NextResponse.json({ message: "Email not found"}, { status: 400 })
+    }
+
+    try{
+        const customer = await prismaClient.customer.findFirst({
+            where: {
+                email: customerEmail
+            }
+        })
+        return NextResponse.json(customer)
+
+    }catch(error){
+        return NextResponse.json({ message: "Customer not found"}, { status: 400 })
+    }
+}
 
 // Rota para cadastrar um cliente
 export async function POST(request: Request){
