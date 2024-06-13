@@ -38,3 +38,27 @@ export  async function PATCH (request: Request) {
     
 }
 
+export async function POST (request: Request) {
+    const { customerId, name, description} = await request.json();
+
+    if(!customerId || !name || !description) {
+        return NextResponse.json({ message: "Failed create new ticket"}, { status: 400 })
+    }
+
+    try{
+        await prismaClient.ticket.create({
+            data: {
+                customerId: customerId,
+                name,
+                description,
+                status: "ABERTO"
+            }
+        })
+    }catch(error){
+        return NextResponse.json({ message: "Failed create new ticket"}, { status: 400 })
+    }
+
+
+
+}
+    
