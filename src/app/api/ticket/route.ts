@@ -3,7 +3,7 @@ import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/auth";
 import prismaClient from "@/lib/prisma";
 
-export  async function PATCH (request: Request) {
+export  async function PATCH(request: Request) {
     const session = await getServerSession(authOptions);
     if(!session || !session.user) {
         return NextResponse.json({ message: "Unauthorized"}, { status: 401 })
@@ -38,7 +38,7 @@ export  async function PATCH (request: Request) {
     
 }
 
-export async function POST (request: Request) {
+export async function POST(request: Request) {
     const { customerId, name, description} = await request.json();
 
     if(!customerId || !name || !description) {
@@ -49,11 +49,13 @@ export async function POST (request: Request) {
         await prismaClient.ticket.create({
             data: {
                 customerId: customerId,
-                name,
-                description,
+                name: name,
+                description: description,
                 status: "ABERTO"
             }
         })
+        return NextResponse.json({ message: "Success create new ticket"}, { status: 200 })
+    
     }catch(error){
         return NextResponse.json({ message: "Failed create new ticket"}, { status: 400 })
     }

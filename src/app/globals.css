@@ -1,3 +1,28 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+body {
+    margin: 0;
+    display: grid;
+    min-height: 100vh;
+  }
+  
+  .layout {
+    display: grid;
+    grid-template-rows: auto 1fr auto;
+    min-height: 100vh;
+  }
+  
+  main {
+    padding: 0px;
+  }
+
+  .hover-zoom {
+    transition: transform 0.5s ease-in-out;
+  }
+  
+  .hover-zoom:hover {
+    transform: scale(1.05);
+  }
+  

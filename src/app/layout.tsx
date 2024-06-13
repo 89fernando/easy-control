@@ -4,6 +4,7 @@ import "./globals.css";
 import { Header } from '@/components/header'
 import { AuthProvider } from "@/providers/auth";
 import { ModalProvider } from "@/providers/modal";
+import { Footer } from "@/components/footer";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
@@ -21,8 +22,12 @@ export default function RootLayout({
       <body className={inter.className}>
         <AuthProvider>
           <ModalProvider>
+          <div className="layout">
               <Header />
-                {children}
+                <main>{children}</main>
+             
+              <Footer />
+              </div>
           </ModalProvider>
         </AuthProvider>
       </body>
