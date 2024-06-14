@@ -47,7 +47,7 @@ export default async function Dashboard() {
                                 <th className="font-medium text-left pl-1">CLIENTE</th>
                                 <th className="font-medium text-left hidden sm:block">DATA CADASTRO</th>
                                 <th className="font-medium text-left">STATUS</th>
-                                <th className="font-medium text-left">#</th>
+                                <th className="font-medium text-left">AÇÕES</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -64,7 +64,7 @@ export default async function Dashboard() {
                     </table>
                 )}
                 {tickets.length === 0 && (
-                    <h1 className="px-2 md:px-0 text-gray-600 text-center my-24">Nenhum ticket foi encontrado.</h1>
+                    <h1 className="text-center text-lg my-24 text-gray-600 pt-2">Nenhum ticket foi encontrado.</h1>
                 )
 
                 }

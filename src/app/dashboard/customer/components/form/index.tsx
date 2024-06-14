@@ -1,45 +1,57 @@
 "use client";
+import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Input } from "@/components/input";
 import { api } from "@/lib/api";
 import { useRouter } from "next/navigation";
+import { ImSpinner10 } from 'react-icons/im';
 
 const schema = z.object({
-    name: z.string().min(1, "O campo nome é obrigatório"),
-    email: z.string().email("Digite um email válido.").min(1, "o email é obrigatório."),
-    phone: z.string().refine( (value) => {
+    name: z.string().min(1, "O campo nome é obrigatório"),
+    email: z.string().email("Digite um email válido.").min(1, "O email é obrigatório."),
+    phone: z.string().refine((value) => {
         return /^(?:\(\d{2}\)\s?)?\d{9}$/.test(value) || /^\d{2}\s\d{9}$/.test(value) || /^\d{11}$/.test(value);
     }, {
-        message:"O número de telefone deve estar neste formato (DD) 999999999"
+        message: "O número de telefone deve estar neste formato (DD) 999999999"
     }),
     address: z.string(),
-})
+});
 
-type FormData = z.infer<typeof schema>
-export function NewCustomerForm({userId}: {userId: string}) {
-    const { register, handleSubmit, formState: { errors }} = useForm<FormData>({
+type FormData = z.infer<typeof schema>;
+
+export function NewCustomerForm({ userId }: { userId: string }) {
+    const { register, handleSubmit, formState: { errors } } = useForm<FormData>({
         resolver: zodResolver(schema),
-    })
+    });
+    const [loading, setLoading] = useState(false);
+    const router = useRouter();
 
-    const router = useRouter()
-    
-    async function handleRegisterCustomer(data: FormData){
-        await api.post("/api/customer", {
-            name: data.name,
-            email: data.email,
-            phone: data.phone,
-            address: data.address,
-            userId
-        })
-        router.refresh()
-        router.replace("/dashboard/customer")
-        
+    async function handleRegisterCustomer(data: FormData) {
+        setLoading(true);
+        try {
+            await api.post("/api/customer", {
+                name: data.name,
+                email: data.email,
+                phone: data.phone,
+                address: data.address,
+                userId
+            });
+            
+            router.replace("/dashboard/customer");
+            
+        } catch (error) {
+            console.error(error);
+        } finally {
+            setLoading(false);
+            router.refresh();
+        }
     }
-    return(
+
+    return (
         <form className="flex flex-col mt-6" onSubmit={handleSubmit(handleRegisterCustomer)}>
-            <label className="mb-1 text-leg font-medium">Nome completo</label>
+            <label className="mb-1 text-lg font-medium">Nome completo</label>
             <Input 
                 type="text"
                 name='name'
@@ -49,7 +61,7 @@ export function NewCustomerForm({userId}: {userId: string}) {
             />  
             <section className="flex gap-2 my-2 flex-col sm:flex-row">
                 <div className="flex-1">
-                    <label className="mb-1 text-leg font-medium">Telefone</label>
+                    <label className="mb-1 text-lg font-medium">Telefone</label>
                     <Input 
                         type="text"
                         name='phone'
@@ -59,7 +71,7 @@ export function NewCustomerForm({userId}: {userId: string}) {
                     />   
                 </div>
                 <div className="flex-1">
-                    <label className="mb-1 text-leg font-medium">Email</label>
+                    <label className="mb-1 text-lg font-medium">Email</label>
                     <Input 
                         type="email"
                         name='email'
@@ -69,7 +81,7 @@ export function NewCustomerForm({userId}: {userId: string}) {
                     />  
                 </div>
             </section>  
-            <label className="mb-1 text-leg font-medium">Endereço completo</label>
+            <label className="mb-1 text-lg font-medium">Endereço completo</label>
             <Input 
                 type="text"
                 name='address'
@@ -77,9 +89,19 @@ export function NewCustomerForm({userId}: {userId: string}) {
                 error={errors.address?.message}
                 register={register}
             />  
-            <button className="bg-blue-500 my-4 px-2 h-11 rounded text-white font-bold">
-                Cadastrar
+            <button
+                type="submit"
+                className="bg-blue-500 my-4 px-2 h-11 rounded text-white font-bold flex items-center justify-center"
+                disabled={loading}
+            >
+                {loading ? (
+                    <>
+                        <ImSpinner10 className="animate-spin mr-2" size={24} />
+                    </>
+                ) : (
+                    "Cadastrar"
+                )}
             </button>
         </form>
-    )
+    );
 }

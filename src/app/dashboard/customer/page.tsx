@@ -43,8 +43,8 @@ export default async function Customer(){
                 </section>
                 {
                     customers.length === 0 && (
-                        <p className="text-center text-lg mt-4 text-gray-600">
-                            Você ainda não possui nenhum cliente
+                        <p className="text-center text-lg my-24 text-gray-600">
+                            Você ainda não possui nenhum cliente.
                         </p>
                     )
                 }

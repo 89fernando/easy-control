@@ -33,6 +33,12 @@ export function ModalTicket(){
                         <p>{ticket?.ticket.description}</p>
                     </div>
 
+                    <div className="flex flex-col gap-1 mb-2">
+                        <h2 className="font-bold">Data de abertura:</h2>
+                        <p>{ticket?.ticket.created_at ? new Date(ticket?.ticket.created_at).toLocaleString() : ""}</p>
+                    </div>
+
+
                     <div className="w-full border-b-[1.5px] my-4"></div>
                     <h1 className="font-bold text-lg mb-4">Detalhes do cliente</h1>
 
